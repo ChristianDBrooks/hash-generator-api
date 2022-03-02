@@ -1,6 +1,9 @@
 /** source/controllers/auth.ts */
 import { Request, Response, NextFunction } from "express";
 import crypto from "crypto";
+import db, { DocumentReference } from "../data/client";
+
+const credentialDocument: DocumentReference = db.getDocument("credentials");
 
 interface Credential {
   username: String;
@@ -23,6 +26,8 @@ const addCredential = (req: Request, res: Response, next: NextFunction) => {
     hash,
   };
 
+  credentialDocument.save(credential);
+
   // return response
   return res.status(200).json({
     message: `User ${username} successfully created!`,
@@ -31,14 +36,23 @@ const addCredential = (req: Request, res: Response, next: NextFunction) => {
 
 // adding a post
 const checkCredential = (req: Request, res: Response, next: NextFunction) => {
-  // return response
   // get data from body
-  // find record by username
-  // hash provided password with retrieved salt
-  // compare generated has with retrieved hash
+  const username: string = req.body.username;
+  const password: string = req.body.password;
+  let data: Credential[] = credentialDocument.getAllFilter(
+    (record: Credential) => {
+      return record.username === username;
+    }
+  );
+  console.log(data);
+  const credentialRecord = data[0];
+  const hash = getHash(credentialRecord.salt + password);
+
+  const valid = hash === credentialRecord.hash;
 
   return res.status(200).json({
-    message: "checkCredential",
+    message: "Successfully checked credentials!",
+    isValid: valid,
   });
 };
 

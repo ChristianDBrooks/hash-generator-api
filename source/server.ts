@@ -4,6 +4,7 @@ import express, { Express } from "express";
 import morgan from "morgan";
 import authRoutes from "./routes/auth";
 import postRoutes from "./routes/posts";
+import db from "./data/client";
 
 const app: Express = express();
 
@@ -34,6 +35,9 @@ app.use((req, res, next) => {
 /** Routes */
 app.use("/", postRoutes);
 app.use("/auth", authRoutes);
+
+/** Database */
+db.createDocument("credentials");
 
 /** Error handling */
 app.use((req, res, next) => {
