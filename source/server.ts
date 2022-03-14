@@ -2,10 +2,7 @@
 import http from "http";
 import express, { Express } from "express";
 import morgan from "morgan";
-import authRoutes from "./routes/auth";
-import postRoutes from "./routes/posts";
-import db from "./data/client";
-
+import hashRoutes from "./routes/hash";
 const app: Express = express();
 
 /** Logging */
@@ -33,11 +30,7 @@ app.use((req, res, next) => {
 });
 
 /** Routes */
-app.use("/", postRoutes);
-app.use("/auth", authRoutes);
-
-/** Database */
-db.createDocument("credentials");
+app.use("/hash", hashRoutes);
 
 /** Error handling */
 app.use((req, res, next) => {

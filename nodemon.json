@@ -1,3 +1,3 @@
 {
-  "ignore": ["./source/data/*.json"]
+  "ignore": ["node_modules/*", "data"]
 }
