@@ -4,8 +4,9 @@
   "description": "API to generate new hashes.",
   "main": "source/server.ts",
   "scripts": {
+    "build": "rm -rf build/ && tsc",
     "dev": "nodemon source/server.ts",
-    "build": "rm -rf build/ && prettier --write source/ && tsc"
+    "start": "node build/server.js"
   },
   "author": "Christian Brooks",
   "license": "ISC",
@@ -21,5 +22,8 @@
   },
   "devDependencies": {
     "@tsconfig/node16": "^1.0.2"
+  },
+  "engines": {
+    "node": "16.x"
   }
 }
