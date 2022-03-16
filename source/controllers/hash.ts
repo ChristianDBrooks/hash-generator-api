@@ -5,15 +5,24 @@ import crypto from "crypto";
 // adding a post
 const generateHash = (req: Request, res: Response, next: NextFunction) => {
   // get the data from req.body
+  const randomSalt: string = req.body.randomSalt;
   const algorithm: string = req.body.algorithm;
   const secret: string = req.body.secret;
-  const salt: string = req.body.salt || "";
+  let salt: string = req.body.salt || "";
+
+  if (randomSalt == "on") {
+    salt = genRandomString(16);
+  }
+
   const hash: string = getHash(salt + secret, algorithm);
 
-  // return response
-  return res.status(200).json({
+  let responseBody = {
     hash: hash,
-  });
+    salt: salt
+  }
+
+  // return response
+  return res.status(200).json(responseBody);
 };
 
 const genRandomString = (length: number) => {
