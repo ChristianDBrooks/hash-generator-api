@@ -3,6 +3,7 @@ import http from "http";
 import express, { Express } from "express";
 import morgan from "morgan";
 import hashRoutes from "./routes/hash";
+const ALLOWED_ORIGINS: string[] = JSON.parse(process.env.ALLOWED_ORIGINS || "[]");
 const app: Express = express();
 
 /** Logging */
@@ -14,6 +15,13 @@ app.use(express.json());
 
 /** RULES OF OUR API */
 app.use((req, res, next) => {
+  let origin = req.get('origin');
+  console.log("origin", origin)
+  if (origin && ALLOWED_ORIGINS.includes(origin)) {
+    console.log("Origin allowed!")
+  } else {
+    console.log("Origin not allowed!")
+  }
   // set the CORS policy
   res.header("Access-Control-Allow-Origin", "*");
   // set the CORS headers

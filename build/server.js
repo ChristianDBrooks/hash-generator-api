@@ -8,6 +8,7 @@ const http_1 = __importDefault(require("http"));
 const express_1 = __importDefault(require("express"));
 const morgan_1 = __importDefault(require("morgan"));
 const hash_1 = __importDefault(require("./routes/hash"));
+const ALLOWED_ORIGINS = JSON.parse(process.env.ALLOWED_ORIGINS || "[]");
 const app = (0, express_1.default)();
 /** Logging */
 app.use((0, morgan_1.default)("dev"));
@@ -17,6 +18,14 @@ app.use(express_1.default.urlencoded({ extended: false }));
 app.use(express_1.default.json());
 /** RULES OF OUR API */
 app.use((req, res, next) => {
+    let origin = req.get('origin');
+    console.log("origin", origin);
+    if (origin && ALLOWED_ORIGINS.includes(origin)) {
+        console.log("Origin allowed!");
+    }
+    else {
+        console.log("Origin not allowed!");
+    }
     // set the CORS policy
     res.header("Access-Control-Allow-Origin", "*");
     // set the CORS headers
