@@ -7,6 +7,7 @@ export const cors = (req: Request, res: Response, next: any) => {
     // set the CORS policy
     res.header("Access-Control-Allow-Origin", origin);  
   } else {
+    res.header("Access-Control-Allow-Origin", "null");  
     console.log("Forbidden Origin: " + origin);
     return res.status(403).json({message: "Forbidden Origin: " + origin})
   }
